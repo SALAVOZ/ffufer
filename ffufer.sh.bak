@@ -12,12 +12,9 @@ if [[ $nmap_output == *"http"* ]]; then
         services+=("http")
 fi
 for serv in ${services[@]}; do
-        for i in ${services[@]}; do
-                echo "$i"
-        done
         dir_list=("/")
         list=(["1"]="_")
-        index=1
+        index=0
         while [[ ${#list[@]} -ne 0 ]]; do
                 for url in ${list[@]}; do
                         current_url_to_delete_from_list=$url
@@ -54,11 +51,11 @@ for serv in ${services[@]}; do
                 echo $t | tr "_" "/"
         done
         if ! [[ -z "$3" ]]; then
-                file_wordlist=$3
-                for url in ${dir_list[@]}; do
-                        url_input=$(echo $url | tr "_" "/")
-                        file_name="$url""files"
-                        ffuf -u "$serv""://$host""$url_input""FUZZ" -w $file_wordlist -t 40 -o "$file_name" -of csv
-                done
-        fi
+			file_wordlist=$3
+			for url in ${dir_list[@]}; do
+					url_input=$(echo $url | tr "_" "/")
+					file_name="$url""files"
+					ffuf -u "$serv""://$host""$url_input""FUZZ" -w $file_wordlist -t 40 -o "$file_name" -of csv
+			done
+		fi
 done
